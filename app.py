@@ -6,7 +6,7 @@ import edamam
 
 import requests
 
-DATABASE_URL = os.environ.get('DATABSAE_URL', 'dbname=menu_masters')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'dbname=menu_masters')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'pretend secret key for testing')
 
 app = Flask(__name__)
@@ -22,12 +22,17 @@ def login():
 def login_action():
     email = request.form.get('email')
     password = request.form.get('password')
-    conn = psycopg2.connect('dbname=menu_masters')
+    hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+    valid = bcrypt.checkpw(password.encode(), hashed_password.encode())
+    print(valid)
+    print(hashed_password)
+    conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
-    cur.execute('SELECT users_id, email, name FROM users WHERE email = %s', [email])
+    cur.execute('SELECT users_id, email, name, password FROM users WHERE email = %s', [email])
     results = cur.fetchone()
     # email_match = results[1]
     print(results)
+    password_hash = results[]
     conn.close()
 
     if results == None:
