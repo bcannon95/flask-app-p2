@@ -1,0 +1,60 @@
+
+.mainstyles {
+    display: grid;
+}
+
+body {
+    background-color: darkslategray;
+}
+
+/* credit to https://codepen.io/aya-suz/pen/ZEvqWQN */
+.mainhead {
+    background: linear-gradient(#fff, #fff),
+                linear-gradient(#fff, #fff),
+                linear-gradient(#fff, #fff),
+                linear-gradient(rgb(142, 143, 249), rgb(142, 143, 249));
+    background-repeat: no-repeat;
+    background-position: left top, right bottom, right bottom, 0px 0px; 
+    background-size: 48% 3px, 3px 65%, 75% 3px, 100% 100%;
+    
+    width: 350px;
+    height: 115px;
+    
+    box-shadow: 20px 20px 0px rgb(112, 234, 211);
+    
+    text-align: center;
+    line-height: 115px;
+    color: #fff;
+    
+    position: relative;
+    
+    cursor: pointer;
+}
+
+.mainhead::after {
+    content: "";
+    height: 3px;
+    width: 150px;
+    background: rgb(254, 216, 215);
+    position: absolute;
+    top: 70%;
+    left: 29%;
+    
+    transition: 0.2s;
+    transform: scaleX(0);  
+}
+
+.mainhead:hover::after {
+    transform: scaleX(1);  
+}
+
+@media only screen and (max-width: 430px) {
+    .mainhead {
+        width: 100%;
+    }
+    
+    body {
+        padding: 20px 0;
+        margin: 0;
+    }
+}
