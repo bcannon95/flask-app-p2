@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <!-- <p>
-        <h1>Title: {{ title }}</h1>
-        <h2>Random Variable: {{ ran_var }}</h2>
-        <img src="{{ image_url }}">
-        {{ details }}
-    </p> -->
-    {% for recipe in ran_var %}
-    <p>
-        {{ recipe["recipe"]["label"] }}
-    </p>
-    {% endfor %}
-
-
-    <a href="/">Home</a>
+    {% if session %}
+    <div class="recipescard">
+        {% for recipe in ran_var %}
+        <div class="card">
+                <a href="{{ recipe['recipe']['url'] }}" target="_blank">
+                    <img src="{{ recipe['recipe']['image'] }}" alt="">
+                </a>
+                <div class="container">
+                <h3>
+                    {{ recipe["recipe"]["label"] }}
+                </h3>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>Sorry no access for you</p>
+    {% endif %}
+        <a href="/home">Home</a>
 {% endblock %}

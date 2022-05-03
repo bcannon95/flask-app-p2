@@ -47,9 +47,10 @@ def index():
     return render_template('home.html')
 
 @app.route('/recipe', methods=["GET"])
-def movie():
+def recipe_search():
     search = request.args.get("search")
     recipe_details = edamam.get_recipes(search)
+    print(recipe_details)
     recipe_name = recipe_details.get('label')
     ran_var = recipe_details.get('hits')
     return render_template('recipes.html', title=recipe_name, details=recipe_details, ran_var=ran_var)
