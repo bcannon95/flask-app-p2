@@ -22,25 +22,25 @@ def login():
 def login_action():
     email = request.form.get('email')
     password = request.form.get('password')
-    hashed_password = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-    valid = bcrypt.checkpw(password.encode(), hashed_password.encode())
-    print(valid)
-    print(hashed_password)
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
     cur.execute('SELECT users_id, email, name, password FROM users WHERE email = %s', [email])
-    results = cur.fetchone()
+    results = cur.fetchall()
+    password_hashed = results[0][3]
+    valid = bcrypt.checkpw(password.encode(), password_hashed.encode())
+    print(valid)
+    print(password_hashed)
     # email_match = results[1]
     print(results)
-    password_hash = results[]
+    # password_hash = results[4]
+    # print(password_hash)
     conn.close()
 
-    if results == None:
-        return redirect('/')
-
-    else:
+    if valid:
         session['email'] = email
         return redirect('/home')
+    else:
+        return redirect('/')
 
 @app.route('/home')
 def index():
