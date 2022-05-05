@@ -4,16 +4,23 @@
     {% if session %}
     <div class="recipescard">
         {% for recipe in ran_var %}
-        <div class="card">
+            <div>
                 <a href="{{ recipe['recipe']['url'] }}" target="_blank">
                     <img src="{{ recipe['recipe']['image'] }}" alt="">
                 </a>
                 <div class="container">
-                <h3>
+                    <form method="POST" action="/recipe">
+                <h3 name="title">
                     {{ recipe["recipe"]["label"] }}
+                        <input type="hidden" name="searchterm" value="{{ search }}">
+                        <input type="hidden" name="url" value="{{ recipe['recipe']['url'] }}" >
+                        <input type="hidden" name="image" value="{{ recipe['recipe']['image'] }}">
+                        <input type="hidden" name="title" value="{{ recipe['recipe']['label'] }}">
+                        <input type="submit" value="save" class="button">
+                    </form>
                 </h3>
+                </div>
             </div>
-        </div>
         {% endfor %}
     </div>
     {% else %}

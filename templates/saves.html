@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    {% if session %}
+    <div class="recipescard">
+        {% for recipe in results %}
+            <div>
+                <a href="{{ recipe[1] }}" target="_blank">
+                    <img src="{{ recipe[2] }}" alt="">
+                </a>
+                <div class="container">
+                    <form method="POST" action="/remove">
+                <h3 name="title">
+                    {{ recipe[0] }}
+                    <input type="hidden" name="title" value="{{ recipe[0] }}">
+                    <input type="submit" value="remove" class="button">
+                </form>
+                </h3>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>Sorry no access for you</p>
+    {% endif %}
+{% endblock %}

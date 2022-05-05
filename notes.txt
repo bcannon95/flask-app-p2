@@ -1,0 +1,5 @@
+Code to has a password
+hashed_password = bcrypt.hashpw('Test123'.encode(), bcrypt.gensalt()).decode()
+
+hashed_password
+$2b$12$2w5O4Cx6hMx/BClqbDaYXeMGRuB8B2qNuD9hqN21H9JYvZYKq8gsq

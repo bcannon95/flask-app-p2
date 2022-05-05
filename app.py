@@ -32,12 +32,15 @@ def login_action():
     print(password_hashed)
     # email_match = results[1]
     print(results)
+    user_id = results[0][0]
+    print(user_id)
     # password_hash = results[4]
     # print(password_hash)
     conn.close()
 
     if valid:
         session['email'] = email
+        session['user_id'] = user_id
         return redirect('/home')
     else:
         return redirect('/')
@@ -49,11 +52,57 @@ def index():
 @app.route('/recipe', methods=["GET"])
 def recipe_search():
     search = request.args.get("search")
+    print(search)
+    session['search'] = search
     recipe_details = edamam.get_recipes(search)
-    print(recipe_details)
     recipe_name = recipe_details.get('label')
     ran_var = recipe_details.get('hits')
-    return render_template('recipes.html', title=recipe_name, details=recipe_details, ran_var=ran_var)
+    return render_template('recipes.html', title=recipe_name, details=recipe_details, ran_var=ran_var, search=search)
+
+@app.route('/recipe', methods=['POST'])
+def save_recipe():
+    url = request.form.get("url")
+    image = request.form.get("image")
+    name = request.form.get("title")
+    search_term = request.form.get("searchterm")
+    user_id = session.get('user_id')
+    print(url)
+    print(image)
+    print(name)
+    print(user_id)
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute('INSERT INTO saves (users_id, name, url, image) VALUES (%s, %s, %s, %s)', [user_id, name, url, image])
+    conn.commit()
+    conn.close()
+    return redirect(f'/recipe?search={search_term}')
+
+@app.route('/saves')
+def saves():
+    user_id = session.get('user_id')
+    # Select statement here to fetch all results when user id = session
+    # Use same logic as recipe
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute('SELECT name, url, image FROM saves WHERE users_id = %s', [user_id])
+    results = cur.fetchall()
+    return render_template('saves.html', results=results)
+
+@app.route('/remove', methods=['POST'])
+def remove():
+    name = request.form.get("title")
+    conn = psycopg2.connect(DATABASE_URL)
+    cur = conn.cursor()
+    cur.execute('DELETE FROM saves WHERE name = %s', [name])
+    conn.commit()
+    conn.close()
+    return redirect('/saves')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(debug=True)

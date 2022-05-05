@@ -2,8 +2,10 @@
 
 {% block main %}
     {% if session %}
-        <form method="GET" action="/recipe">
-            <label for="recipe">Recipe</label><input id="search" name="search">
+        <form method="GET" action="/recipe" class="recipesearch">
+            <h2>What ingredients do you have?</h2>
+            <i><strong>hint*</strong> separate each item with a comma (e.g. chicken, rice, lettuce)</i><br><br>
+            <label for="recipe"></label><input id="search" name="search">
             <button>submit</button>
         </form>
     {% else %}

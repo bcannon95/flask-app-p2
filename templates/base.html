@@ -11,7 +11,37 @@
 
 <section>
     <div class="mainstyles">
+        {% if session %}
+        <a href="/home" target="_blank">
         <h1 class="mainhead">MENU MASTERS</h1>
+        </a>
+        <div class="site">
+            <nav class="nav">
+                <ul class="nav__list">
+                    <a href="/saves">
+                        <li class="nav__item">Saved Recipes</li>
+                    </a>
+                    <a href="/home">
+                        <li class="nav__item">Find Recipes</li>
+                    </a>
+                    <a href="/logout">
+                        <li class="nav__item">Log Out</li>
+                    </a>
+                </ul>
+            </nav>
+        </div>
+        {% else %}
+            <h1 class="mainhead">MENU MASTERS</h1>
+            <div class="site">
+                <nav class="nav">
+                    <ul class="nav__list">
+                        <a href="/">
+                            <li class="nav__item">Log In</li>
+                        </a>
+                    </ul>
+                </nav>
+            </div>
+        {% endif %}
         {% block main %}
         {% endblock %}
         <footer class="center">Copyright B-rock</footer>
